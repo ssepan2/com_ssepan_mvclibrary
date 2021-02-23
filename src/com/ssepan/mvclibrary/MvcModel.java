@@ -23,9 +23,9 @@ public class MvcModel
         super();
         
         //TODO:init fields
-      setSomeStringField("");
-      setSomeIntegerField(0);
-      setSomeBooleanField(false);
+        //someStringField="";
+        //someIntegerField=0;
+        //someBooleanField=false;
         
     }
     // </editor-fold>
@@ -36,8 +36,8 @@ public class MvcModel
     // <editor-fold defaultstate="collapsed" desc="Properties">
     //Note: "Default serialization will not serialize 'transient' and 'static' fields."
 
-    private String someStringFieldOld;
-    private String someStringField;
+    private String someStringFieldOld="";
+    private String someStringField="";
     public String getSomeStringField()
     {
         String sStatusMessage="";
@@ -74,8 +74,8 @@ public class MvcModel
         }
     }
     
-    private Integer someIntegerFieldOld;
-    private Integer someIntegerField;
+    private Integer someIntegerFieldOld=0;
+    private Integer someIntegerField=0;
     public Integer getSomeIntegerField()
     {
         String sStatusMessage="";
@@ -112,8 +112,8 @@ public class MvcModel
         }
     }
 
-    private Boolean someBooleanFieldOld;
-    private Boolean someBooleanField;
+    private Boolean someBooleanFieldOld=false;
+    private Boolean someBooleanField=false;
     public Boolean isSomeBooleanField()
     {
         String sStatusMessage="";
