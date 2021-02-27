@@ -22,7 +22,7 @@ public class MvcModel
         //call ctor() in base
         super();
         
-        //TODO:init fields
+        //NOTE:do not init fields
         //someStringField="";
         //someIntegerField=0;
         //someBooleanField=false;
@@ -30,7 +30,8 @@ public class MvcModel
     }
     // </editor-fold>
     
-    final String C_XML_FILE = "SomeXml.xml";
+    public static String C_XML_FILE = "SomeXml.xml";
+    public static String C_INI_FILE = "SomeIni.ini";
     
     
     // <editor-fold defaultstate="collapsed" desc="Properties">
@@ -150,52 +151,4 @@ public class MvcModel
         }
     }
     // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="XML IO">
-//    public static void Write
-//    (
-//        String filepath,
-//        MvcModel model
-//    ) 
-//        throws FileNotFoundException
-//    {
-//        try 
-//        (
-//            XMLEncoder encoder = new XMLEncoder
-//            (
-//                new BufferedOutputStream
-//                (
-//                    new FileOutputStream(filepath)//"Beanarchive.xml"
-//                )
-//            )
-//        )
-//        { 
-//            encoder.writeObject(model);
-//        }
-//    }
-//    
-//    public static MvcModel Read
-//    (
-//        String filepath
-//    ) 
-//        throws FileNotFoundException
-//    {
-//        MvcModel returnValue;
-//        try 
-//        (
-//            XMLDecoder decoder = new XMLDecoder
-//            (
-//                new BufferedInputStream
-//                (
-//                    new FileInputStream(filepath)//"Beanarchive.xml"
-//                )
-//            )
-//        )
-//        {        
-//            returnValue = (MvcModel)decoder.readObject();
-//        }
-//        
-//        return returnValue;
-//    }
-//    // </editor-fold>
 }
