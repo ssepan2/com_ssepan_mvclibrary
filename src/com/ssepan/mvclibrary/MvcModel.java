@@ -14,6 +14,7 @@ public class MvcModel
      extends ModelBase
 {
     // <editor-fold defaultstate="collapsed" desc="Declarations">
+    Boolean bForceNotifyField;//= false;
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Constructors">
@@ -22,10 +23,9 @@ public class MvcModel
         //call ctor() in base
         super();
         
-        //NOTE:do not init fields
-        //someStringField="";
-        //someIntegerField=0;
-        //someBooleanField=false;
+        someStringField="";
+        someIntegerField=0;
+        someBooleanField=false;
         
     }
     // </editor-fold>
@@ -56,16 +56,19 @@ public class MvcModel
         return returnValue;
     }
     public void setSomeStringField(String value)// throws PropertyVetoException
-    {
+        {
         String sStatusMessage="";
         String sErrorMessage="";
 
         try {
-            someStringFieldOld = someStringField;
-            //vetoableChangeSupport.fireVetoableChange("someStringField", someStringFieldOld, value);
-            someStringField = value;
-            propertyChangeSupport.firePropertyChange("someStringField", someStringFieldOld, someStringField);
-            setDirty(true);
+            if ((someStringField != value) || bForceNotifyField) {
+                someStringFieldOld = someStringField;
+                //vetoableChangeSupport.fireVetoableChange("someStringField", someStringFieldOld, value);
+                someStringField = value;
+                propertyChangeSupport.firePropertyChange("someStringField", someStringFieldOld, someStringField);
+                setDirty(true);
+                System.out.println(String.format("setSomeStringField: before='%s', after='%s'",someStringFieldOld,someStringField));
+            }
         } catch (Exception ex) {
             //sErrorMessage=ex.getMessage();
             Log.write(ex,Level.ALL);
@@ -94,16 +97,19 @@ public class MvcModel
         return returnValue;
     }
     public void setSomeIntegerField(Integer value)//        throws PropertyVetoException
-    {
+        {
         String sStatusMessage="";
         String sErrorMessage="";
 
         try {
-            someIntegerFieldOld = someIntegerField;
-            //vetoableChangeSupport.fireVetoableChange("someIntegerField", someIntegerFieldOld, value);
-            someIntegerField = value;
-            propertyChangeSupport.firePropertyChange("someIntegerField", someIntegerFieldOld, someIntegerField);
-            setDirty(true);
+            if ((someIntegerField != value) || bForceNotifyField) {
+                someIntegerFieldOld = someIntegerField;
+                //vetoableChangeSupport.fireVetoableChange("someIntegerField", someIntegerFieldOld, value);
+                someIntegerField = value;
+                propertyChangeSupport.firePropertyChange("someIntegerField", someIntegerFieldOld, someIntegerField);
+                setDirty(true);
+                System.out.println(String.format("setSomeIntegerField: before='%s', after='%s'",someIntegerFieldOld.toString(),someIntegerField.toString()));
+            }
         } catch (Exception ex) {
             //sErrorMessage=ex.getMessage();
             Log.write(ex,Level.ALL);
@@ -132,16 +138,19 @@ public class MvcModel
         return returnValue;
     }
     public void setSomeBooleanField(Boolean value)// throws PropertyVetoException
-    {
+        {
         String sStatusMessage="";
         String sErrorMessage="";
 
         try {
-            someBooleanFieldOld = someBooleanField;
-            //vetoableChangeSupport.fireVetoableChange("someBooleanField", someBooleanFieldOld, value);
-            someBooleanField = value;
-            propertyChangeSupport.firePropertyChange("someBooleanField", someBooleanFieldOld, someBooleanField);
-            setDirty(true);
+            if ((someBooleanField != value) || bForceNotifyField) {
+                someBooleanFieldOld = someBooleanField;
+                //vetoableChangeSupport.fireVetoableChange("someBooleanField", someBooleanFieldOld, value);
+                someBooleanField = value;
+                propertyChangeSupport.firePropertyChange("someBooleanField", someBooleanFieldOld, someBooleanField);
+                setDirty(true);
+                System.out.println(String.format("setSomeBooleanField: before='%s', after='%s'",someBooleanFieldOld.toString(),someBooleanField.toString()));
+            }
         } catch (Exception ex) {
             //sErrorMessage=ex.getMessage();
             Log.write(ex,Level.ALL);
@@ -151,4 +160,35 @@ public class MvcModel
         }
     }
     // </editor-fold>
+    
+
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+  public void  refreshModel(Boolean bPreserveDirty) {
+     String sErrorMessage="";
+     Boolean bSaveDirty=false;
+    try {
+        bForceNotifyField = true;//will get past != check in property set
+
+        bSaveDirty = isDirty();
+        //setting these will set Dirty property...
+        setKey(getKey());
+        setSomeBooleanField(isSomeBooleanField());
+        setSomeIntegerField(getSomeIntegerField());
+        setSomeStringField(getSomeStringField());
+
+        //...so clear dirty flag after refreshing values
+        if (bPreserveDirty) {
+            setDirty(bSaveDirty); 
+        } else {
+            setDirty(false);
+        }
+    } catch (Exception ex) {
+        //sErrorMessage=ex.getMessage();
+        Log.write(ex,Level.ALL);
+    } finally {
+       bForceNotifyField = false;//don't want this on all the time
+    };
+  };
+    // </editor-fold>
+    
 }
