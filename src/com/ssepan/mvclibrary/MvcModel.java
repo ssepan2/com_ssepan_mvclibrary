@@ -14,7 +14,11 @@ public class MvcModel
      extends ModelBase
 {
     // <editor-fold defaultstate="collapsed" desc="Declarations">
-    Boolean bForceNotifyField;//= false;
+    public static String SOMESTRING_NEW = "";
+    public static Integer SOMEINTEGER_NEW = 0;
+    public static Boolean SOMEBOOLEAN_NEW = false;
+    
+    Boolean bForceNotifyField= false;
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Constructors">
@@ -22,11 +26,7 @@ public class MvcModel
     {
         //call ctor() in base
         super();
-        
-        someStringField="";
-        someIntegerField=0;
-        someBooleanField=false;
-        
+                
     }
     // </editor-fold>
     
@@ -37,8 +37,8 @@ public class MvcModel
     // <editor-fold defaultstate="collapsed" desc="Properties">
     //Note: "Default serialization will not serialize 'transient' and 'static' fields."
 
-    private String someStringFieldOld="";
-    private String someStringField="";
+    private String someStringFieldOld=SOMESTRING_NEW;
+    private String someStringField=SOMESTRING_NEW;
     public String getSomeStringField()
     {
         String sStatusMessage="";
@@ -55,7 +55,7 @@ public class MvcModel
         }
         return returnValue;
     }
-    public void setSomeStringField(String value)// throws PropertyVetoException
+    public void setSomeStringField(String value)
         {
         String sStatusMessage="";
         String sErrorMessage="";
@@ -63,11 +63,10 @@ public class MvcModel
         try {
             if ((someStringField != value) || bForceNotifyField) {
                 someStringFieldOld = someStringField;
-                //vetoableChangeSupport.fireVetoableChange("someStringField", someStringFieldOld, value);
                 someStringField = value;
-                propertyChangeSupport.firePropertyChange("someStringField", someStringFieldOld, someStringField);
-                setDirty(true);
                 System.out.println(String.format("setSomeStringField: before='%s', after='%s'",someStringFieldOld,someStringField));
+                notifyPropertyChanged("someStringField");
+                setDirty(true);
             }
         } catch (Exception ex) {
             //sErrorMessage=ex.getMessage();
@@ -78,8 +77,8 @@ public class MvcModel
         }
     }
     
-    private Integer someIntegerFieldOld=0;
-    private Integer someIntegerField=0;
+    private Integer someIntegerFieldOld=SOMEINTEGER_NEW;
+    private Integer someIntegerField=SOMEINTEGER_NEW;
     public Integer getSomeIntegerField()
     {
         String sStatusMessage="";
@@ -96,7 +95,7 @@ public class MvcModel
         }
         return returnValue;
     }
-    public void setSomeIntegerField(Integer value)//        throws PropertyVetoException
+    public void setSomeIntegerField(Integer value)
         {
         String sStatusMessage="";
         String sErrorMessage="";
@@ -104,11 +103,10 @@ public class MvcModel
         try {
             if ((someIntegerField != value) || bForceNotifyField) {
                 someIntegerFieldOld = someIntegerField;
-                //vetoableChangeSupport.fireVetoableChange("someIntegerField", someIntegerFieldOld, value);
                 someIntegerField = value;
-                propertyChangeSupport.firePropertyChange("someIntegerField", someIntegerFieldOld, someIntegerField);
-                setDirty(true);
                 System.out.println(String.format("setSomeIntegerField: before='%s', after='%s'",someIntegerFieldOld.toString(),someIntegerField.toString()));
+                notifyPropertyChanged("someIntegerField");
+                setDirty(true);
             }
         } catch (Exception ex) {
             //sErrorMessage=ex.getMessage();
@@ -119,8 +117,8 @@ public class MvcModel
         }
     }
 
-    private Boolean someBooleanFieldOld=false;
-    private Boolean someBooleanField=false;
+    private Boolean someBooleanFieldOld=SOMEBOOLEAN_NEW;
+    private Boolean someBooleanField=SOMEBOOLEAN_NEW;
     public Boolean isSomeBooleanField()
     {
         String sStatusMessage="";
@@ -137,7 +135,7 @@ public class MvcModel
         }
         return returnValue;
     }
-    public void setSomeBooleanField(Boolean value)// throws PropertyVetoException
+    public void setSomeBooleanField(Boolean value)
         {
         String sStatusMessage="";
         String sErrorMessage="";
@@ -145,11 +143,10 @@ public class MvcModel
         try {
             if ((someBooleanField != value) || bForceNotifyField) {
                 someBooleanFieldOld = someBooleanField;
-                //vetoableChangeSupport.fireVetoableChange("someBooleanField", someBooleanFieldOld, value);
                 someBooleanField = value;
-                propertyChangeSupport.firePropertyChange("someBooleanField", someBooleanFieldOld, someBooleanField);
-                setDirty(true);
                 System.out.println(String.format("setSomeBooleanField: before='%s', after='%s'",someBooleanFieldOld.toString(),someBooleanField.toString()));
+                notifyPropertyChanged("someBooleanField");
+                setDirty(true);
             }
         } catch (Exception ex) {
             //sErrorMessage=ex.getMessage();
@@ -166,15 +163,32 @@ public class MvcModel
   public void  refreshModel(Boolean bPreserveDirty) {
      String sErrorMessage="";
      Boolean bSaveDirty=false;
+     String tempKey;
+     String tempSomeString;
+     Integer tempSomeInteger;
+     Boolean tempSomeBoolean;
+     
     try {
         bForceNotifyField = true;//will get past != check in property set
 
         bSaveDirty = isDirty();
         //setting these will set Dirty property...
-        setKey(getKey());
-        setSomeBooleanField(isSomeBooleanField());
-        setSomeIntegerField(getSomeIntegerField());
-        setSomeStringField(getSomeStringField());
+        //NOTE:in Java PropertyChangeSupport, the event will only fire if old!=new
+        tempKey=getKey();
+        setKey(KEY_NEW);
+        setKey(tempKey);
+        
+        tempSomeBoolean=isSomeBooleanField();
+        setSomeBooleanField(SOMEBOOLEAN_NEW);
+        setSomeBooleanField(tempSomeBoolean);
+        
+        tempSomeInteger=getSomeIntegerField();
+        setSomeIntegerField(SOMEINTEGER_NEW);
+        setSomeIntegerField(tempSomeInteger);
+        
+        tempSomeString=getSomeStringField();
+        setSomeStringField(SOMESTRING_NEW);
+        setSomeStringField(tempSomeString);
 
         //...so clear dirty flag after refreshing values
         if (bPreserveDirty) {
