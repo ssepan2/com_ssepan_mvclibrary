@@ -6,6 +6,7 @@ import java.util.logging.Level;
 //import javax.swing.JComponent;
 import com.ssepan.application.*;
 import com.ssepan.utility.*;
+import java.io.FileNotFoundException;
 /**
  *
  * @author ssepan
@@ -201,6 +202,51 @@ public class MvcModel
        bForceNotifyField = false;//don't want this on all the time
     };
   };
+
+
+    // <editor-fold defaultstate="collapsed" desc="INI IO">
+    public static Boolean WriteIni
+    (
+        String filepath,
+        MvcModel model
+    ) 
+        throws FileNotFoundException
+    {
+//        Wini ini = new Wini(new File("C:\\Users\\sdkca\\Desktop\\myinifile.ini"));
+//
+//        ini.put("block_name", "property_name", "value");
+//        ini.put("block_name", "property_name_2", 45.6);
+//        ini.store();
+        
+        return true;
+    }
+
+    
+    public static Boolean ReadIni
+    (
+        String filepath,
+        MvcModel model
+    ) 
+        throws FileNotFoundException
+    {
+//        Wini ini = new Wini(new File("C:\\Users\\sdkca\\Desktop\\myinifile.ini"));
+//        
+//        int age = ini.get("owner", "age", int.class);
+//        double height = ini.get("owner", "height", double.class);
+//        String server = ini.get("database", "server");
+
+        
+            //NOTE:temp code
+            model.setKey(model.getKey());
+            model.setSomeBooleanField(!model.isSomeBooleanField());
+            model.setSomeIntegerField(model.getSomeIntegerField()+1);
+            model.setSomeStringField(model.getSomeStringField()+"y");
+        
+        return true;
+    }
+
     // </editor-fold>
+  
+// </editor-fold>
     
 }
