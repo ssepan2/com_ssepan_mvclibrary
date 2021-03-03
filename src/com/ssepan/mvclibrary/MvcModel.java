@@ -1,12 +1,18 @@
 package com.ssepan.mvclibrary;
 
 //import java.beans.*;
-//import java.io.*;
+import java.io.*;//File
+import java.nio.file.*;//Path
+import java.util.*;
 import java.util.logging.Level;
 //import javax.swing.JComponent;
 import com.ssepan.application.*;
 import com.ssepan.utility.*;
 import java.io.FileNotFoundException;
+//NOTE:may reference libini4j-java
+//import org.ini4j.*;//https://ourcodeworld.com/articles/read/839/how-to-read-parse-from-and-write-to-ini-files-easily-in-java
+import org.json.simple.*;
+import org.json.simple.parser.*;
 /**
  *
  * @author ssepan
@@ -19,6 +25,9 @@ public class MvcModel
     public static Integer SOMEINTEGER_NEW = 0;
     public static Boolean SOMEBOOLEAN_NEW = false;
     
+    //public static String C_INI_FILE = "mvcmodel.ini";
+    public static String C_JSON_FILE = "mvcmodel_%s.json";
+    
     Boolean bForceNotifyField= false;
     // </editor-fold>
     
@@ -30,9 +39,6 @@ public class MvcModel
                 
     }
     // </editor-fold>
-    
-    public static String C_XML_FILE = "SomeXml.xml";
-    public static String C_INI_FILE = "SomeIni.ini";
     
     
     // <editor-fold defaultstate="collapsed" desc="Properties">
@@ -204,47 +210,122 @@ public class MvcModel
   };
 
 
-    // <editor-fold defaultstate="collapsed" desc="INI IO">
-    public static Boolean WriteIni
+    // <editor-fold defaultstate="collapsed" desc="JSON IO">
+    public static Boolean WriteJson
     (
         String filepath,
         MvcModel model
     ) 
-        throws FileNotFoundException
+        //throws FileNotFoundException, IOException
     {
-//        Wini ini = new Wini(new File("C:\\Users\\sdkca\\Desktop\\myinifile.ini"));
-//
-//        ini.put("block_name", "property_name", "value");
-//        ini.put("block_name", "property_name_2", 45.6);
-//        ini.store();
-        
+        try {
+            //Ini ini = new Ini(new File(filepath));
+            JSONObject json = new JSONObject();
+
+            json.put("SomeStringField", model.getSomeStringField());
+            json.put("SomeIntegerField", model.getSomeIntegerField());
+            json.put("SomeBooleanField", model.isSomeBooleanField());
+            
+            FileWriter file = new FileWriter(filepath);//Key in filename instead of inside file
+            file.write(json.toJSONString()); 
+            file.flush();
+        } catch(Exception ex) {
+            //sErrorMessage=ex.getMessage();
+            Log.write(ex,Level.ALL);
+        } finally {
+            
+        }
+
         return true;
     }
-
     
-    public static Boolean ReadIni
+    public static Boolean ReadJson
     (
         String filepath,
         MvcModel model
     ) 
-        throws FileNotFoundException
+        //throws FileNotFoundException, IOException
     {
-//        Wini ini = new Wini(new File("C:\\Users\\sdkca\\Desktop\\myinifile.ini"));
-//        
-//        int age = ini.get("owner", "age", int.class);
-//        double height = ini.get("owner", "height", double.class);
-//        String server = ini.get("database", "server");
+        try {
+            //Ini ini = new Ini(new File(filepath));
+            JSONParser jsonParser = new JSONParser();
+            FileReader reader = new FileReader(filepath);//Key in filename instead of inside file
+            JSONObject json;// = new JSONObject();
 
-        
-            //NOTE:temp code
-            model.setKey(model.getKey());
-            model.setSomeBooleanField(!model.isSomeBooleanField());
-            model.setSomeIntegerField(model.getSomeIntegerField()+1);
-            model.setSomeStringField(model.getSomeStringField()+"y");
+            json = (JSONObject)jsonParser.parse(reader);
+            
+            String someString = (String)json.get("SomeStringField");//json.get(model.getKey(), "SomeStringField");
+            Integer someInteger = (Integer)json.get("SomeIntegerField");//json.get(model.getKey(), "SomeIntegerField", Integer.class);
+            Boolean someBoolean = (Boolean)json.get("SomeBooleanField");//json.get(model.getKey(), "SomeBooleanField", Boolean.class);
+
+            //model Key is already set
+            model.setSomeStringField(someString);
+            model.setSomeIntegerField(someInteger);
+            model.setSomeBooleanField(someBoolean);
+        } catch (Exception ex) {
+            //sErrorMessage=ex.getMessage();
+            Log.write(ex,Level.ALL);
+        } finally {
+            
+        }
         
         return true;
     }
-
+     //</editor-fold>
+  
+  
+//    // <editor-fold defaultstate="collapsed" desc="INI IO">
+//    public static Boolean WriteIni
+//    (
+//        String filepath,
+//        MvcModel model
+//    ) 
+//        //throws FileNotFoundException, IOException
+//    {
+//        try {
+//            Ini ini = new Ini(new File(filepath));
+//
+//            ini.put(model.getKey(), "SomeStringField", model.getSomeStringField());
+//            ini.put(model.getKey(), "SomeIntegerField", model.getSomeIntegerField());
+//            ini.put(model.getKey(), "SomeBooleanField", model.isSomeBooleanField());
+//            ini.store();
+//        } catch(Exception ex) {
+//            //sErrorMessage=ex.getMessage();
+//            Log.write(ex,Level.ALL);
+//        } finally {
+//            
+//        }
+//
+//        return true;
+//    }
+    
+//    public static Boolean ReadIni
+//    (
+//        String filepath,
+//        MvcModel model
+//    ) 
+//        //throws FileNotFoundException, IOException
+//    {
+//        try {
+//            Ini ini = new Ini(new File(filepath));
+//
+//            String someString = ini.get(model.getKey(), "SomeStringField");
+//            Integer someInteger = ini.get(model.getKey(), "SomeIntegerField", Integer.class);
+//            Boolean someBoolean = ini.get(model.getKey(), "SomeBooleanField", Boolean.class);
+//
+//            //model Key is already set
+//            model.setSomeStringField(someString);
+//            model.setSomeIntegerField(someInteger);
+//            model.setSomeBooleanField(someBoolean);
+//        } catch (Exception ex) {
+//            //sErrorMessage=ex.getMessage();
+//            Log.write(ex,Level.ALL);
+//        } finally {
+//            
+//        }
+//        
+//        return true;
+//    }
     // </editor-fold>
   
 // </editor-fold>
