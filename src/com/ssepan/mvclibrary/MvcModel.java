@@ -73,7 +73,6 @@ public class MvcModel
             Log.write(ex,Level.ALL);
         } finally {
             //always do this
-
         }
     }
     
@@ -113,7 +112,6 @@ public class MvcModel
             Log.write(ex,Level.ALL);
         } finally {
             //always do this
-
         }
     }
 
