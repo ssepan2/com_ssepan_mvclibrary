@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Com.Ssepan.MvcLibrary">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/Com.Ssepan.MvcLibrary.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
